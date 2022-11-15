@@ -2,6 +2,7 @@ package de.dhbw.silencio.audio;
 
 import javax.sound.sampled.AudioFormat;
 import java.util.Arrays;
+import java.util.concurrent.*;
 
 public class AudioInput {
     private static final String MICROPHONE_1 = "Microphone 1";
@@ -9,7 +10,13 @@ public class AudioInput {
 
     private static final int BUFFER_SIZE = 4096;
 
+    private final ExecutorService executor = Executors.newSingleThreadExecutor();
+
     public static void main(String[] args) {
+        new AudioInput().run();
+    }
+
+    private void run() {
         AudioFormat format = new AudioFormat(
             AudioFormat.Encoding.PCM_SIGNED,
             48000.0f,
@@ -28,10 +35,17 @@ public class AudioInput {
             m2.listen();
 
             while (true) {
-                System.out.printf("Microphone 1: %s%n", Arrays.toString(m1.getNextChunk(BUFFER_SIZE)));
-                System.out.printf("Microphone 2: %s%n", Arrays.toString(m2.getNextChunk(BUFFER_SIZE)));
-                System.out.println();
+                Future<byte[]> futureM1 = executor.submit(() -> m1.getNextChunk(BUFFER_SIZE));
+                Future<byte[]> futureM2 = executor.submit(() -> m2.getNextChunk(BUFFER_SIZE));
+
+                if (futureM1.isDone() && futureM2.isDone()) {
+                    System.out.printf("Microphone 1: %s%n", Arrays.toString(futureM1.get()));
+                    System.out.printf("Microphone 2: %s%n", Arrays.toString(futureM2.get()));
+                    System.out.println();
+                }
             }
+        } catch (ExecutionException | InterruptedException e) {
+            throw new RuntimeException(e);
         }
     }
 }
