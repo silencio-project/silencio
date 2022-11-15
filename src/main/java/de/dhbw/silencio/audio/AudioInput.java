@@ -7,7 +7,7 @@ public class AudioInput {
     private static final String MICROPHONE_1 = "Microphone 1";
     private static final String MICROPHONE_2 = "Microphone 2";
 
-    private static final int BUFFER_SIZE = 4096;
+    private static final int BUFFER_SIZE = 48000;
 
     public static void main(String[] args) {
         new AudioInput().run();
