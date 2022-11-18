@@ -28,8 +28,11 @@ public class AudioInput {
 
         try (Microphone m1 = new Microphone(MICROPHONE_1, format);
              Microphone m2 = new Microphone(MICROPHONE_2, format)) {
-            m1.listen();
-            m2.listen();
+            m1.prepare();
+            m2.prepare();
+
+            m1.run();
+            m2.run();
 
             while (true) {
                 System.out.printf("Microphone 1: %s%n", Arrays.toString(m1.getNextChunk(BUFFER_SIZE)));

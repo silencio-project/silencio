@@ -6,7 +6,7 @@ import javax.sound.sampled.*;
 import java.io.Closeable;
 
 @RequiredArgsConstructor
-public class Microphone implements Closeable {
+public class Microphone implements Closeable, Runnable {
     @Getter
     private final String deviceName;
 
@@ -42,14 +42,13 @@ public class Microphone implements Closeable {
         throw new IllegalArgumentException("Device %s not found.".formatted(deviceName));
     }
 
-    public void listen() {
+    public void prepare() {
         Line.Info info = new DataLine.Info(TargetDataLine.class, format);
         Mixer mixer = getMixer(deviceName);
 
         try {
             line = (TargetDataLine) mixer.getLine(info);
             line.open(format);
-            line.start();
         } catch (LineUnavailableException e) {
             throw new IllegalArgumentException("Line is not available (%s)".formatted(e.getMessage()));
         }
@@ -68,6 +67,11 @@ public class Microphone implements Closeable {
     @Override
     public void close() {
         line.close();
+    }
+
+    @Override
+    public void run() {
+        line.start();
     }
 }
 
