@@ -1,7 +1,15 @@
 package de.dhbw.silencio.audio;
 
 import javax.sound.sampled.AudioFormat;
+import java.util.Arrays;
 
+/**
+ * (Hopefully) temporary class to test the audio processing.
+ *
+ * @author Yannick Kirschen
+ * @author Moritz Thoma
+ * @since 1.0.0
+ */
 public class AudioInput {
     private static final String MICROPHONE_1 = "Microphone 1";
     private static final String MICROPHONE_2 = "Microphone 2";
@@ -34,29 +42,29 @@ public class AudioInput {
             microphone2.run();
 
             while (true) {
-                byte[] data1 = microphone1.getNextChunk(BUFFER_SIZE);
-                byte[] data2 = microphone2.getNextChunk(BUFFER_SIZE);
+                byte[] raw1 = microphone1.getNextChunk(BUFFER_SIZE);
+                byte[] raw2 = microphone2.getNextChunk(BUFFER_SIZE);
 
-                Complex[] cinput = new Complex[data1.length];
-                for (int i = 0; i < data1.length; i++) {
-                    cinput[i] = new Complex(data1[i], 0.0);
-                }
+                int[] data1 = new MicrophoneDataConverter(raw1).convertTo16BitArray();
+                int[] data2 = new MicrophoneDataConverter(raw2).convertTo16BitArray();
 
-                FastFourierTransformation.fft(cinput);
+                Complex[] complexes1 = Complex.of(data1);
+                Complex[] complexes2 = Complex.of(data1);
 
-                System.out.println("Results:");
-                for (Complex c : cinput) {
-                    System.out.println(c);
-                }
+                FastFourierTransformation.transform(complexes1);
+                FastFourierTransformation.transform(complexes2);
 
-//                System.out.printf("Microphone 1: %s%n", findMaxValue(data1));
-//                System.out.printf("Microphone 2: %s%n", findMaxValue(data2));
+                System.out.printf("Microphone 1: %s%n", Arrays.toString(complexes1));
+                System.out.printf("Microphone 2: %s%n", Arrays.toString(complexes2));
                 System.out.println();
             }
         }
     }
 
-    private int findMaxValue(byte[] array) {
+    /**
+     * Temporarily unused.
+     */
+    private int findMaxValue(int[] array) {
         byte peak = 0;
         int index = -1;
 
