@@ -51,7 +51,7 @@ public class Complex {
         Complex[] complexArray = new Complex[array.length];
 
         for (int i = 0; i < array.length; i++) {
-            complexArray[i] = Complex.of(i);
+            complexArray[i] = Complex.of(array[i]);
         }
 
         return complexArray;
