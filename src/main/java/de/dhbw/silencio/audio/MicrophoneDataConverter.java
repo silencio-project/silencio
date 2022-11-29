@@ -29,7 +29,7 @@ public class MicrophoneDataConverter {
         int[] data16Bit = new int[data.length / 2];
 
         for (int i = 0, j = 0; i < data.length - 1; i += 2, j++) {
-            data16Bit[j] = data[i] * 256 + data[i + 1];
+            data16Bit[j] = (data[i] & 255) << 8 | (data[i + 1] & 255);
         }
 
         return data16Bit;
