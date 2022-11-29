@@ -99,6 +99,30 @@ public class Complex {
     }
 
     /**
+     * Divides this complex number by the given one.
+     *
+     * @param b complex number to divide by
+     * @return a new complex number containing the result of the division
+     */
+    public Complex divide(Complex b) {
+        double den = Math.pow(b.modulus(), 2);
+        return new Complex((real * b.real + imaginary * b.imaginary) / den, (imaginary * b.real - real * b.imaginary) / den);
+    }
+
+    /**
+     * Calculates the modulus of this complex number.
+     *
+     * @return the modulus of this complex number
+     */
+    public double modulus() {
+        if (real != 0 || imaginary != 0) {
+            return Math.sqrt(real * real + imaginary * imaginary);
+        } else {
+            return 0d;
+        }
+    }
+
+    /**
      * @return the complex conjugate (negative imaginary)
      */
     public Complex conjugate() {
