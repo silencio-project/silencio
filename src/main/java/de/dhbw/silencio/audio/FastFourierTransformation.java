@@ -46,4 +46,24 @@ public class FastFourierTransformation {
             coefficients[k + size / 2] = even[k].subtract(t);
         }
     }
+
+    /**
+     * Performs an Inverse Fast Fourier Transformation on a given array of complex numbers.
+     * <p>
+     * This uses {@link #transform(Complex[])} for performing the FFT. Before, it calculates the complex conjugate of
+     * all values, performs the FFT and calculates the complex conjugate again.
+     *
+     * @param coefficients numbers to perform IFFT on (size must be power of 2)
+     */
+    public static void transformInverse(Complex[] coefficients) {
+        transformAllToConjugate(coefficients);
+        transform(coefficients);
+        transformAllToConjugate(coefficients);
+    }
+
+    private static void transformAllToConjugate(Complex[] complexes) {
+        for (int i = 0; i < complexes.length; i++) {
+            complexes[i] = complexes[i].conjugate();
+        }
+    }
 }
