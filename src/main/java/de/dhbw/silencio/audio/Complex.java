@@ -34,11 +34,11 @@ public class Complex {
     /**
      * Creates a complex number from an integer.
      *
-     * @param i real number to transform into a complex number
+     * @param r real number to transform into a complex number
      * @return a complex number from an integer
      */
-    public static Complex of(int i) {
-        return new Complex(i, 0.0);
+    public static Complex of(int r) {
+        return new Complex(r, 0.0);
     }
 
     /**
