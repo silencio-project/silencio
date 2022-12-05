@@ -9,7 +9,11 @@ import java.time.LocalDateTime;
 
 public class Protocol {
     private int roomUid;
-    // [1 frame][timestamp , angle]
+    /**
+     * The first array holds for each frame an array,which provides on
+     * index 0 the timestamp and on
+     * index 1 the angle of the pointer.
+     */
     private int[][] data;
     private LocalDateTime time;
 

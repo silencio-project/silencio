@@ -47,12 +47,12 @@
             <scope>test</scope>
         </dependency>
 
-            <dependency>
-                <groupId>org.openjfx</groupId>
-                <artifactId>javafx-controls</artifactId>
-                <version>${javafx.version}</version>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-controls</artifactId>
+            <version>${javafx.version}</version>
 
-            </dependency>
+        </dependency>
 
     </dependencies>
 
