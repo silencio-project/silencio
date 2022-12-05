@@ -1,5 +1,8 @@
 package ui.scene;
 
+import ui.components.LabeledDoubleNumberField;
+import ui.components.LabeledNumberField;
+import ui.components.RoomLayout;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -8,10 +11,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Callback;
-import ui.components.LabeledDoubleNumberField;
-import ui.components.LabeledNumberField;
 import ui.components.LabeledTextField;
-import ui.components.RoomLayout;
 import ui.data.Room;
 import ui.data._TestData;
 

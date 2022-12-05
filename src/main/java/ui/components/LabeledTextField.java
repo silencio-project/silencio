@@ -1,10 +1,10 @@
 package ui.components;
 
+import ui.util.Typography;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
-import ui.util.Typography;
 
 /**
  * @author Moritz Thoma

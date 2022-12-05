@@ -6,6 +6,6 @@
 
 module ui {
     requires javafx.controls;
-    exports ui;
     exports ui.scene;
+    exports ui;
 }

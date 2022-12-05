@@ -1,8 +1,8 @@
 package ui;
 
+import ui.scene.Dashboard;
 import javafx.application.Application;
 import javafx.stage.Stage;
-import ui.scene.Dashboard;
 
 /**
  * @author Moritz Thoma

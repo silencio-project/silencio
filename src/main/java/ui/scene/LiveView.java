@@ -1,6 +1,7 @@
 package ui.scene;
 
 
+import ui.components.RoomLayout;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -13,7 +14,6 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import javafx.util.Duration;
-import ui.components.RoomLayout;
 import ui.data.Room;
 import ui.data._TestData;
 import ui.util.Typography;
