@@ -1,10 +1,12 @@
-package playgroundFx;
+package ui;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
+import ui.scene.Dashboard;
 
 /**
- * JavaFX App
+ * @author Moritz Thoma
+ * @since 1.0.0
  */
 public class App extends Application {
 
