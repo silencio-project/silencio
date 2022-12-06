@@ -6,7 +6,7 @@
 
     <groupId>de.dhbw.silencio</groupId>
     <artifactId>silencio</artifactId>
-    <version>1.0.0.SNAPSHOT</version>
+    <version>1.0.0-SNAPSHOT</version>
 
     <name>silencio</name>
     <description>Silencio. localizes a sound in a room.</description>
