@@ -27,8 +27,12 @@
 
         <lombok.version>1.18.24</lombok.version>
 
+        <javafx.version>19</javafx.version>
         <junit.version>5.9.1</junit.version>
+
+        <compiler.plugin.version>3.10.1</compiler.plugin.version>
         <surefire.plugin.version>2.22.2</surefire.plugin.version>
+        <javafx.plugin.version>0.0.3</javafx.plugin.version>
     </properties>
 
     <dependencies>
@@ -45,15 +49,50 @@
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-controls</artifactId>
+            <version>${javafx.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-fxml</artifactId>
+            <version>${javafx.version}</version>
+        </dependency>
+
     </dependencies>
 
     <build>
         <plugins>
+            <!-- Needed for JavaFX modules -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${compiler.plugin.version}</version>
+
+                <configuration>
+                    <source>${maven.compiler.source}</source>
+                    <target>${maven.compiler.target}</target>
+                </configuration>
+            </plugin>
+
             <!-- Need at least 2.22.0 to support JUnit 5 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>${surefire.plugin.version}</version>
+            </plugin>
+
+            <plugin>
+                <groupId>org.openjfx</groupId>
+                <artifactId>javafx-maven-plugin</artifactId>
+                <version>${javafx.plugin.version}</version>
+
+                <configuration>
+                    <mainClass>de.dhbw.silencio.ui.App</mainClass>
+                </configuration>
             </plugin>
         </plugins>
     </build>
