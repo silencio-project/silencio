@@ -5,6 +5,8 @@
 
 module de.dhbw.silencio {
     requires javafx.controls;
+    requires java.desktop;
+    requires lombok;
 
     exports de.dhbw.silencio.ui.scene;
     exports de.dhbw.silencio.ui;
