@@ -1,4 +1,4 @@
-package ui.data;
+package de.dhbw.silencio.ui.data;
 
 /**
  * @author Moritz Thoma
@@ -50,6 +50,10 @@ public class Room {
         this.distanceToWallLeft = distanceToWallLeft;
         this.description = description;
         this.uid = uid;
+    }
+
+    public static Room emptyRoom() {
+        return new Room(1000, 700, 0, 0, 0, 0, 0, 0, 0, 0, 0, "empty");
     }
 
     public String getDescription() {
@@ -124,7 +128,6 @@ public class Room {
         this.betweenRows = betweenRows;
     }
 
-
     public int getDistanceToWallLeft() {
         return distanceToWallLeft;
     }
@@ -163,8 +166,5 @@ public class Room {
 
     public void setDeskDistanceToWallLeft(int deskDistanceToWallLeft) {
         this.deskDistanceToWallLeft = deskDistanceToWallLeft;
-    }
-    public static Room emptyRoom() {
-        return new Room(1000, 700, 0, 0, 0, 0, 0, 0, 0, 0, 0, "empty");
     }
 }

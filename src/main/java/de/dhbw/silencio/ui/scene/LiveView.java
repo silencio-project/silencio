@@ -1,25 +1,18 @@
-package ui.scene;
+package de.dhbw.silencio.ui.scene;
 
 
-import ui.components.RoomLayout;
-import javafx.animation.Animation;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
+import de.dhbw.silencio.ui.components.RoomLayout;
+import de.dhbw.silencio.ui.data.*;
+import de.dhbw.silencio.ui.util.Typography;
+import javafx.animation.*;
 import javafx.collections.FXCollections;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
+import javafx.geometry.*;
 import javafx.scene.control.*;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
-import javafx.util.Callback;
-import javafx.util.Duration;
-import ui.data.Room;
-import ui.data._TestData;
-import ui.util.Typography;
+import javafx.util.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author Moritz Thoma
@@ -28,7 +21,7 @@ import java.util.List;
 
 public class LiveView extends DefaultScene {
 
-    private int currentAngle = 0;
+    private final int currentAngle = 0;
     private Room currentRoom;
     private RoomLayout roomLayout;
     private ArrayList<String> mic1List;

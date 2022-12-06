@@ -1,9 +1,8 @@
-package ui.components;
+package de.dhbw.silencio.ui.components;
 
-import ui.util.Typography;
+import de.dhbw.silencio.ui.util.Typography;
 import javafx.geometry.Insets;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 
 /**
@@ -20,7 +19,7 @@ public class LabeledTextField extends GridPane {
         textField.setPrefWidth(200);
         var label = new Label(title);
         label.setFont(Typography.textFieldTitleFont());
-        this.setPadding(new Insets(0,20,10,10));
+        this.setPadding(new Insets(0, 20, 10, 10));
         this.setVgap(3);
         this.add(label, 0, 0);
         this.add(textField, 0, 1);
@@ -35,7 +34,7 @@ public class LabeledTextField extends GridPane {
         return textField.getText();
     }
 
-    public void setText(String text){
+    public void setText(String text) {
         textField.setText(text);
     }
 

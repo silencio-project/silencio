@@ -1,13 +1,11 @@
-package ui.scene;
+package de.dhbw.silencio.ui.scene;
 
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
+import de.dhbw.silencio.ui.util.Typography;
+import javafx.geometry.*;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import ui.util.Typography;
 
 /**
  * @author Moritz Thoma

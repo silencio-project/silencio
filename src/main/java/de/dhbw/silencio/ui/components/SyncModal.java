@@ -1,17 +1,12 @@
-package ui.components;
+package de.dhbw.silencio.ui.components;
 
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+import javafx.animation.*;
+import javafx.event.*;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
+import javafx.scene.control.*;
+import javafx.scene.layout.*;
+import javafx.stage.*;
 import javafx.util.Duration;
 
 /**
@@ -22,6 +17,18 @@ import javafx.util.Duration;
 public class SyncModal {
 
     private int timeSeconds = 10;
+
+    private static void startSync(Label label) {
+        for (int i = 4; i > 0; i--) {
+            try {
+                Thread.sleep(1000);
+                label.setText(String.valueOf(i));
+
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
 
     public boolean display() {
         var stage = new Stage();
@@ -69,17 +76,5 @@ public class SyncModal {
         stage.showAndWait();
 
         return true;
-    }
-
-    private static void startSync(Label label) {
-        for (int i = 4; i > 0; i--) {
-            try {
-                Thread.sleep(1000);
-                label.setText(String.valueOf(i));
-
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-        }
     }
 }

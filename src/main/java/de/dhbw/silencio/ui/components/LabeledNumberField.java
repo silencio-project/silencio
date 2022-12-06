@@ -1,10 +1,9 @@
-package ui.components;
+package de.dhbw.silencio.ui.components;
 
+import de.dhbw.silencio.ui.util.Typography;
 import javafx.geometry.Insets;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
-import ui.util.Typography;
 
 /**
  * @author Moritz Thoma
@@ -27,7 +26,7 @@ public class LabeledNumberField extends GridPane {
                 } else {
                     textField.setText(oldValue);
                 }
-            }else {
+            } else {
                 value = 0;
             }
         });

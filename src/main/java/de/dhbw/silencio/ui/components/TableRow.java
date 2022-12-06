@@ -1,4 +1,4 @@
-package ui.components;
+package de.dhbw.silencio.ui.components;
 
 import javafx.scene.layout.HBox;
 
@@ -9,7 +9,7 @@ import javafx.scene.layout.HBox;
 
 public class TableRow extends HBox {
 
-    public TableRow(int tables , int tableLength, int tableWidth) {
+    public TableRow(int tables, int tableLength, int tableWidth) {
         for (int i = 0; i < tables; i++) {
             this.getChildren().add(new Table(tableLength, tableWidth, false));
         }

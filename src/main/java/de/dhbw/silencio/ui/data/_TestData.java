@@ -1,8 +1,7 @@
-package ui.data;
+package de.dhbw.silencio.ui.data;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class _TestData {
 

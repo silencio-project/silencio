@@ -1,11 +1,10 @@
-package ui.components;
+package de.dhbw.silencio.ui.components;
 
+import de.dhbw.silencio.ui.util.Typography;
 import javafx.geometry.Insets;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
-import ui.util.Typography;
 
 /**
  * @author Moritz Thoma
@@ -31,7 +30,7 @@ public class LabeledDoubleNumberField extends GridPane {
                 } else {
                     textField1.setText(oldValue);
                 }
-            }else {
+            } else {
                 value1 = 0;
             }
         });
@@ -42,7 +41,7 @@ public class LabeledDoubleNumberField extends GridPane {
                 } else {
                     textField2.setText(oldValue);
                 }
-            }else {
+            } else {
                 value2 = 0;
             }
         });
@@ -54,7 +53,7 @@ public class LabeledDoubleNumberField extends GridPane {
         label.setFont(Typography.textFieldTitleFont());
         this.setPadding(new Insets(0, 20, 10, 10));
         this.setVgap(3);
-        this.add(label, 0, 0,3,1);
+        this.add(label, 0, 0, 3, 1);
         this.add(textField1, 0, 1);
         this.add(x, 1, 1);
         this.add(textField2, 2, 1);

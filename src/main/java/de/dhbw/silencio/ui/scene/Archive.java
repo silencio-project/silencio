@@ -1,21 +1,14 @@
-package ui.scene;
+package de.dhbw.silencio.ui.scene;
 
-import ui.components.RoomLayout;
-import javafx.animation.Animation;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
+import de.dhbw.silencio.ui.components.RoomLayout;
+import de.dhbw.silencio.ui.data.*;
+import de.dhbw.silencio.ui.util.Typography;
+import javafx.animation.*;
+import javafx.geometry.*;
 import javafx.scene.control.*;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
-import javafx.util.Callback;
-import javafx.util.Duration;
-import ui.data.Protocol;
-import ui.data.Room;
-import ui.data._TestData;
-import ui.util.Typography;
+import javafx.util.*;
 
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;

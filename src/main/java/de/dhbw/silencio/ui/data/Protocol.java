@@ -1,4 +1,4 @@
-package ui.data;
+package de.dhbw.silencio.ui.data;
 
 import java.time.LocalDateTime;
 
@@ -10,9 +10,8 @@ import java.time.LocalDateTime;
 public class Protocol {
     private int roomUid;
     /**
-     * The first array holds for each frame an array,which provides on
-     * index 0 the timestamp and on
-     * index 1 the angle of the pointer.
+     * The first array holds for each frame an array,which provides on index 0 the timestamp and on index 1 the angle of
+     * the pointer.
      */
     private int[][] data;
     private LocalDateTime time;

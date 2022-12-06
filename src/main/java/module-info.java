@@ -1,11 +1,11 @@
-
 /**
  * @author Moritz Thoma
  * @since 1.0.0
  */
 
-module ui {
+module de.dhbw.silencio {
     requires javafx.controls;
-    exports ui.scene;
-    exports ui;
+
+    exports de.dhbw.silencio.ui.scene;
+    exports de.dhbw.silencio.ui;
 }

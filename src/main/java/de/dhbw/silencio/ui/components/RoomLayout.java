@@ -1,8 +1,8 @@
-package ui.components;
+package de.dhbw.silencio.ui.components;
 
+import de.dhbw.silencio.ui.data.Room;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import ui.data.Room;
 
 public class RoomLayout extends StackPane {
 
@@ -52,6 +52,7 @@ public class RoomLayout extends StackPane {
         this.getChildren().add(roomLayout);
 
     }
+
     public void updatePointer(int angle, int length) {
         desk.updateAngle(angle, length);
     }

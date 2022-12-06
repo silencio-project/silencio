@@ -1,6 +1,6 @@
-package ui;
+package de.dhbw.silencio.ui;
 
-import ui.scene.Dashboard;
+import de.dhbw.silencio.ui.scene.Dashboard;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -10,6 +10,10 @@ import javafx.stage.Stage;
  */
 public class App extends Application {
 
+    public static void main(String[] args) {
+        launch();
+    }
+
     @Override
     public void start(Stage stage) {
         stage.setHeight(1000);
@@ -18,10 +22,6 @@ public class App extends Application {
         stage.setScene(new Dashboard(stage));
         stage.show();
 
-    }
-
-    public static void main(String[] args) {
-        launch();
     }
 
 }

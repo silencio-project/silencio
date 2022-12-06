@@ -1,19 +1,12 @@
-package ui.scene;
+package de.dhbw.silencio.ui.scene;
 
-import ui.components.LabeledDoubleNumberField;
-import ui.components.LabeledNumberField;
-import ui.components.RoomLayout;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
+import de.dhbw.silencio.ui.components.*;
+import de.dhbw.silencio.ui.data.*;
+import javafx.geometry.*;
 import javafx.scene.control.*;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.util.Callback;
-import ui.components.LabeledTextField;
-import ui.data.Room;
-import ui.data._TestData;
 
 /**
  * @author Moritz Thoma
