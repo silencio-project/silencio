@@ -33,7 +33,7 @@ public class FileStorage {
     //TODO exceptionhandling
     public void storeProtocol(Protocol protocol){
         try {
-            FileWriter writer = new FileWriter(filenameProtocol);
+            FileWriter writer = new FileWriter(filenameProtocol, true);
             String[] columns = new String[] {"roomUid", "data", "time"};
             mappingStrategyProtocol.setColumnMapping(columns);
             StatefulBeanToCsvBuilder<Protocol> builder = new StatefulBeanToCsvBuilder(writer);
@@ -48,8 +48,8 @@ public class FileStorage {
 
     public void storeRoom(Room room){
         try {
-            FileWriter writer = new FileWriter(filenameRoom);
-            String[] columns = new String[] {"roomUid", "data", "time"};
+            FileWriter writer = new FileWriter(filenameRoom, true);
+            String[] columns = new String[] {"uid", "description", "length", "width", "deskDistanceToBoard", "deskDistanceToWallLeft", "distanceFirstRowToDesk", "tableLength", "tableWidth", "rows", "tablesPerRow", "betweenRows", "distanceToWallLeft"};
             mappingStrategyRoom.setColumnMapping(columns);
             StatefulBeanToCsvBuilder<Room> builder = new StatefulBeanToCsvBuilder(writer);
             StatefulBeanToCsv beanWriter = builder.withMappingStrategy(mappingStrategyProtocol).build();
