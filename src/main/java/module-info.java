@@ -7,6 +7,7 @@ module de.dhbw.silencio {
     requires javafx.controls;
     requires java.desktop;
     requires lombok;
+    requires opencsv;
 
     exports de.dhbw.silencio.ui.scene;
     exports de.dhbw.silencio.ui;
