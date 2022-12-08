@@ -3,7 +3,6 @@ package de.dhbw.silencio.ui.data;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 
 import com.opencsv.CSVReader;
@@ -12,7 +11,7 @@ import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.StatefulBeanToCsv;
 import com.opencsv.bean.StatefulBeanToCsvBuilder;
 
-
+// todo: exception handling
 public class FileStorage {
 
     final String filenameProtocol = "protocols.csv";
@@ -71,7 +70,6 @@ public class FileStorage {
     }
 
 
-    //TODO exceptionhandling
     public void storeProtocol(Protocol protocol){
         try {
             FileWriter writer = new FileWriter(filenameProtocol, true);
