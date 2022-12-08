@@ -22,11 +22,24 @@ public class FileStorage {
 
 
     public FileStorage(){
+        CreateMappingStrategyProtocol();
+        CreateMappingStrategyRoom();
+    }
+
+    private void CreateMappingStrategyProtocol(){
         mappingStrategyProtocol = new ColumnPositionMappingStrategy();
         mappingStrategyProtocol.setType(Protocol.class);
 
+        String[] columns = new String[] {"roomUid", "data", "time"};
+        mappingStrategyProtocol.setColumnMapping(columns);
+    }
+
+    private void CreateMappingStrategyRoom(){
         mappingStrategyRoom = new ColumnPositionMappingStrategy();
         mappingStrategyRoom.setType(Room.class);
+
+        String[] columns = new String[] {"uid", "description", "length", "width", "deskDistanceToBoard", "deskDistanceToWallLeft", "distanceFirstRowToDesk", "tableLength", "tableWidth", "rows", "tablesPerRow", "betweenRows", "distanceToWallLeft"};
+        mappingStrategyRoom.setColumnMapping(columns);
     }
 
     public ArrayList<Protocol> getAllProtocols(){
@@ -36,9 +49,6 @@ public class FileStorage {
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
-
-        String[] columns = new String[] {"roomUid", "data", "time"};
-        mappingStrategyProtocol.setColumnMapping(columns);
 
         CsvToBean csvToBean = new CsvToBean();
 
@@ -54,9 +64,6 @@ public class FileStorage {
             throw new RuntimeException(e);
         }
 
-        String[] columns = new String[] {"uid", "description", "length", "width", "deskDistanceToBoard", "deskDistanceToWallLeft", "distanceFirstRowToDesk", "tableLength", "tableWidth", "rows", "tablesPerRow", "betweenRows", "distanceToWallLeft"};
-        mappingStrategyRoom.setColumnMapping(columns);
-
         CsvToBean csvToBean = new CsvToBean();
 
         ArrayList<Room> roomList = (ArrayList<Room>) csvToBean.parse(mappingStrategyRoom, csvReader);
@@ -68,8 +75,6 @@ public class FileStorage {
     public void storeProtocol(Protocol protocol){
         try {
             FileWriter writer = new FileWriter(filenameProtocol, true);
-            String[] columns = new String[] {"roomUid", "data", "time"};
-            mappingStrategyProtocol.setColumnMapping(columns);
             StatefulBeanToCsvBuilder<Protocol> builder = new StatefulBeanToCsvBuilder(writer);
             StatefulBeanToCsv beanWriter = builder.withMappingStrategy(mappingStrategyProtocol).build();
 
@@ -83,8 +88,6 @@ public class FileStorage {
     public void storeRoom(Room room){
         try {
             FileWriter writer = new FileWriter(filenameRoom, true);
-            String[] columns = new String[] {"uid", "description", "length", "width", "deskDistanceToBoard", "deskDistanceToWallLeft", "distanceFirstRowToDesk", "tableLength", "tableWidth", "rows", "tablesPerRow", "betweenRows", "distanceToWallLeft"};
-            mappingStrategyRoom.setColumnMapping(columns);
             StatefulBeanToCsvBuilder<Room> builder = new StatefulBeanToCsvBuilder(writer);
             StatefulBeanToCsv beanWriter = builder.withMappingStrategy(mappingStrategyProtocol).build();
 
