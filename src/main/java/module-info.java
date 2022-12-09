@@ -1,8 +1,9 @@
 /**
+ * @author Paul Antoni
+ * @author Yannick Kirschen
  * @author Moritz Thoma
  * @since 1.0.0
  */
-
 module de.dhbw.silencio {
     requires javafx.controls;
     requires java.desktop;

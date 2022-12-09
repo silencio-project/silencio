@@ -1,4 +1,4 @@
-package de.dhbw.silencio.ui.data;
+package de.dhbw.silencio.storage;
 
 import java.time.LocalDateTime;
 
