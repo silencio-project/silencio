@@ -1,6 +1,6 @@
 package de.dhbw.silencio.ui.components;
 
-import de.dhbw.silencio.ui.data.Room;
+import de.dhbw.silencio.storage.Room;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
