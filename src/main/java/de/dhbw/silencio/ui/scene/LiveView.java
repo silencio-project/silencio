@@ -25,6 +25,7 @@ import javafx.util.Duration;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -180,14 +181,14 @@ public class LiveView extends DefaultScene {
             isRecording = false;
 
 
-            if (isValid(currentProtocol)) {
+           /* if (isValid(currentProtocol)) {
                 try {
                     new ProtocolRepositoryCsv().save(currentProtocol);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
             }
-            currentProtocol = new Protocol();
+            currentProtocol = new Protocol();*/
         });
 
         layout.getChildren().addAll(left, roomLayout);
@@ -222,6 +223,9 @@ public class LiveView extends DefaultScene {
                 roomLayout.updatePointer(currentAngle, 200);
 
                 if (isRecording) {
+                    if (currentProtocol.getData() == null) {
+                        currentProtocol.setData(new int[360000][2]); // max 10h
+                    }
                     currentProtocol.getData()[currentProtocol.getData().length - 1][0] = (int) System.currentTimeMillis();
                     currentProtocol.getData()[currentProtocol.getData().length - 1][1] = (int) currentAngle; // TODO should be double
                 }

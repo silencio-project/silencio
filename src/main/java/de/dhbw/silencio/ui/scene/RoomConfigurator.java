@@ -37,6 +37,7 @@ public class RoomConfigurator extends DefaultScene {
         var layout = (HBox) this.getParentContent();
         var grid = new GridPane();
         var roomRepo = new RoomRepositoryCsv();
+
         try {
             roomList = roomRepo.getAll();
         } catch (IOException e) {
@@ -55,6 +56,10 @@ public class RoomConfigurator extends DefaultScene {
         var distanceToWallLeft = new LabeledNumberField("Distance to wall left *");
         var cm = new Label("* in cm ");
         cm.setPadding(new Insets(0, 0, 10, 10));
+
+
+        var save = new Button("Save");
+        save.setDisable(true);
 
         var refresh = new Button("Refresh");
         refresh.setOnAction(actionEvent -> {
@@ -95,10 +100,11 @@ public class RoomConfigurator extends DefaultScene {
                 currentSelected.setDistanceToWallLeft(distanceToWallLeft.getValue());
                 currentSelected.setDescription(description.getText());
                 updateRoom(layout, currentSelected);
+                save.setDisable(false);
             }
         });
 
-        var save = new Button("Save");
+
         var newRoom = new Button("New");
 
         var hButtons = new HBox(newRoom, refresh, save);
@@ -168,6 +174,7 @@ public class RoomConfigurator extends DefaultScene {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
+            save.setDisable(true);
             dropDown.setItems(FXCollections.observableArrayList(roomList));
         });
 
