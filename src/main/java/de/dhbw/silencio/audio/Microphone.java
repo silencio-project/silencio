@@ -108,7 +108,6 @@ public class Microphone implements Closeable, Runnable {
             Thread.onSpinWait();
         }
 
-        System.out.println(System.currentTimeMillis());
         line.start();
     }
 
