@@ -4,7 +4,6 @@ package de.dhbw.silencio.ui.scene;
 import de.dhbw.silencio.audio.DirectionProviderBuilder;
 import de.dhbw.silencio.audio.Microphone;
 import de.dhbw.silencio.storage.Protocol;
-import de.dhbw.silencio.storage.ProtocolRepositoryCsv;
 import de.dhbw.silencio.storage.Room;
 import de.dhbw.silencio.storage.RoomRepositoryCsv;
 import de.dhbw.silencio.ui.components.RoomLayout;
@@ -25,7 +24,6 @@ import javafx.util.Duration;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -179,16 +177,6 @@ public class LiveView extends DefaultScene {
             play.setDisable(false);
             lastRecording.setDisable(false);
             isRecording = false;
-
-
-           /* if (isValid(currentProtocol)) {
-                try {
-                    new ProtocolRepositoryCsv().save(currentProtocol);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            currentProtocol = new Protocol();*/
         });
 
         layout.getChildren().addAll(left, roomLayout);
