@@ -18,6 +18,8 @@ import java.util.*;
  * To make sure the {@link TargetDataLine} is closed, when not needed anymore, this class implements {@link Closeable}.
  * Make sure using try-with resources to probably close all resources. In case you want to work with multiple
  * microphones, this class implements {@link Runnable}, reading the data in the background.
+ * <p>
+ * <b>Attention!</b> When running a {@link Microphone} in a new thread, it will wait for the {@link #trigger} to be set.
  *
  * @author Yannick Kirschen
  * @author Moritz Thoma
@@ -32,6 +34,10 @@ public class Microphone implements Closeable, Runnable {
     private final AudioFormat format;
 
     private TargetDataLine line;
+
+    @Getter
+    @Setter
+    private volatile boolean trigger = false;
 
     /**
      * Prints all available audio devices.
@@ -98,6 +104,11 @@ public class Microphone implements Closeable, Runnable {
 
     @Override
     public void run() {
+        while (!trigger) {
+            Thread.onSpinWait();
+        }
+
+        System.out.println(System.currentTimeMillis());
         line.start();
     }
 
