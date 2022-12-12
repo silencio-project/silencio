@@ -1,6 +1,7 @@
 package de.dhbw.silencio.ui.scene;
 
 
+import de.dhbw.silencio.audio.*;
 import de.dhbw.silencio.ui.components.RoomLayout;
 import de.dhbw.silencio.ui.data.*;
 import de.dhbw.silencio.ui.util.Typography;
@@ -21,21 +22,23 @@ import java.util.*;
 
 public class LiveView extends DefaultScene {
 
-    private final int currentAngle = 0;
+    private double currentAngle = 0;
     private Room currentRoom;
     private RoomLayout roomLayout;
-    private ArrayList<String> mic1List;
-    private ArrayList<String> mic2List;
+    private List<String> mic1List;
+    private List<String> mic2List;
     private String microphone1 = "";
     private String microphone2 = "";
+
+    private DirectionProviderBuilder directionProviderBuilder;
 
     public LiveView(Stage stage) {
         super(new HBox(), stage.getWidth(), stage.getHeight(), stage, "Live View");
         var layout = (HBox) this.getParentContent();
 
         var roomList = _TestData.rooms();
-        mic1List = new ArrayList<>(List.of("mic1", "mic2", "mic3", "mic4", "mic5")); //TODO
-        mic2List = new ArrayList<>(List.of("mic1", "mic2", "mic3", "mic4", "mic5")); //TODO
+        mic1List = new ArrayList<>(Microphone.getAvailableDevices());
+        mic2List = new ArrayList<>(Microphone.getAvailableDevices());
 
         currentRoom = Room.emptyRoom();
         roomLayout = new RoomLayout(currentRoom);
@@ -80,10 +83,21 @@ public class LiveView extends DefaultScene {
         mic1Choice.valueProperty().addListener(((observableValue, old, newValue) -> {
             if (newValue != null) {
                 microphone1 = newValue;
-                mic2List = new ArrayList<>(List.of("mic1", "mic2", "mic3", "mic4", "mic5")); // TODO
+                mic2List = new ArrayList<>(Microphone.getAvailableDevices());
                 mic2List.remove(microphone1);
                 mic2Choice.setItems(FXCollections.observableList(mic2List));
 
+//                if (!microphone1.isEmpty() && !microphone2.isEmpty()) {
+//                    directionProviderBuilder = new DirectionProviderBuilder()
+//                        .deviceName1(microphone1)
+//                        .deviceName2(microphone2);
+//
+//                    Timeline timeline = new Timeline(new KeyFrame(
+//                        Duration.millis(250), ev -> directionProviderBuilder.callback(
+//                        angle -> roomLayout.updatePointer(angle, 200)).build().run()));
+//                    timeline.setCycleCount(Animation.INDEFINITE);
+//                    timeline.play();
+//                }
             }
         }));
 
@@ -92,12 +106,27 @@ public class LiveView extends DefaultScene {
         mic2Choice.valueProperty().addListener(((observableValue, old, newValue) -> {
             if (newValue != null) {
                 microphone2 = newValue;
-                mic1List = new ArrayList<>(List.of("mic1", "mic2", "mic3", "mic4", "mic5")); // TODO
+                mic1List = new ArrayList<>(Microphone.getAvailableDevices());
                 mic1List.remove(microphone2);
                 mic1Choice.setItems(FXCollections.observableList(mic1List));
+
+                if (!microphone1.isEmpty() && !microphone2.isEmpty()) {
+                    new Thread(new DirectionProviderBuilder()
+                        .deviceName1(microphone1)
+                        .deviceName2(microphone2)
+                        .callback(angle -> currentAngle = angle)
+                        .build()).start();
+
+                    Timeline timeline = new Timeline(new KeyFrame(
+                        Duration.millis(100), ev -> {
+                        System.out.println(currentAngle);
+                        roomLayout.updatePointer(currentAngle, 200);
+                    }));
+                    timeline.setCycleCount(Animation.INDEFINITE);
+                    timeline.play();
+                }
             }
         }));
-
 
         var play = new Button("Start");
         var stop = new Button("Stop & Save");
@@ -122,12 +151,6 @@ public class LiveView extends DefaultScene {
         var left = new VBox(roomChoiceTitle, roomChoice, mic1ChoiceTitle, mic1Choice, mic2ChoiceTitle, mic2Choice, bottom);
         left.setPadding(new Insets(0, 20, 0, 10));
         left.setSpacing(5);
-
-        Timeline timeline = new Timeline(new KeyFrame(
-            Duration.millis(250), ev -> roomLayout.updatePointer(currentAngle, 200))
-        );
-        timeline.setCycleCount(Animation.INDEFINITE);
-
 
         play.setOnAction(event -> {
             stop.setDisable(false);

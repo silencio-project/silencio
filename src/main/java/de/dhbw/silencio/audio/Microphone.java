@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.sound.sampled.*;
 import java.io.Closeable;
+import java.util.*;
 
 /**
  * Provides access to a microphone.
@@ -38,15 +39,19 @@ public class Microphone implements Closeable, Runnable {
      * This is a convenience method, that uses Java's {@link Mixer.Info} to get all devices connected to the computer.
      * By using this method, you can get the {@link #deviceName} needed for instantiating a {@link Microphone}.
      */
-    public static void printAvailableDevices() {
+    public static List<String> getAvailableDevices() {
+        List<String> devices = new ArrayList<>();
+
         Line.Info line = new Line.Info(TargetDataLine.class);
         for (Mixer.Info info : AudioSystem.getMixerInfo()) {
             Mixer mixer = AudioSystem.getMixer(info);
 
             if (mixer.isLineSupported(line)) {
-                System.out.println(info.getName());
+                devices.add(info.getName());
             }
         }
+
+        return devices;
     }
 
     /**

@@ -53,7 +53,7 @@ public class RoomLayout extends StackPane {
 
     }
 
-    public void updatePointer(int angle, int length) {
+    public void updatePointer(double angle, int length) {
         desk.updateAngle(angle, length);
     }
 

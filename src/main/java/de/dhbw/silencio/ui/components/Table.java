@@ -34,7 +34,7 @@ public class Table extends Region {
         }
     }
 
-    public void updateAngle(int angle, double length) {
+    public void updateAngle(double angle, double length) {
         if (angle != 0 && angle < 180 && angle != 90) {
             angle = 180 - angle;
             var ratio = Math.tan(Math.toRadians(angle));
