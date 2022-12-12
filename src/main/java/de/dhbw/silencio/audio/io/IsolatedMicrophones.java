@@ -32,6 +32,12 @@ public class IsolatedMicrophones implements StereoMicrophone {
     }
 
     @Override
+    public void stop() {
+        microphone1.stopListen();
+        microphone2.stopListen();
+    }
+
+    @Override
     public byte[] get(Channel channel, int buffer) {
         return (channel == Channel.ONE ? microphone1 : microphone2).getNextChunk(buffer);
     }

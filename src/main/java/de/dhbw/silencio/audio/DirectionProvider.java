@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 
 import javax.sound.sampled.AudioFormat;
 import java.io.IOException;
-import java.util.function.Consumer;
+import java.util.function.*;
 
 /**
  * Uses two microphones to calculate an angle of a sound source between those microphones.
@@ -28,13 +28,24 @@ public class DirectionProvider implements Runnable {
 
     private final Consumer<Double> callback;
 
+    private boolean listening = false;
+
+    /**
+     * Stops providing the direction.
+     */
+    public void stop() {
+        listening = false;
+    }
+
     @Override
     public void run() {
+        listening = true;
+
         try (StereoMicrophone microphone = new IsolatedMicrophones(format, deviceName1, deviceName2)) {
             microphone.listen();
 
             AngleCalculator angleCalculator = new AngleCalculator(microphoneDistance, sampleRate);
-            while (true) {
+            while (listening) {
                 byte[] raw1 = microphone.get(Channel.ONE, bufferSize);
                 byte[] raw2 = microphone.get(Channel.TWO, bufferSize);
 
@@ -49,6 +60,8 @@ public class DirectionProvider implements Runnable {
                     callback.accept(angle);
                 }
             }
+
+            microphone.stop();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
