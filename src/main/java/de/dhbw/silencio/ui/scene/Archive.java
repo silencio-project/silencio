@@ -105,7 +105,7 @@ public class Archive extends DefaultScene {
                 currentIndex = 0;
 
                 currentProtocol = selected;
-                var room = getRoomByUid((ArrayList<Room>) finalRoomList, currentProtocol.getRoomUid());
+                var room = getRoomByUid(finalRoomList, currentProtocol.getRoomUid());
                 if (room != null) {
                     updateRoom(layout, room);
                     slider.setMax(currentProtocol.getData().length - 1);
@@ -171,7 +171,7 @@ public class Archive extends DefaultScene {
         }
     }
 
-    private Room getRoomByUid(ArrayList<Room> list, int uid) {
+    private Room getRoomByUid(List<Room> list, int uid) {
         return list.stream()
             .filter((room) -> room.getUid() == uid)
             .findAny()

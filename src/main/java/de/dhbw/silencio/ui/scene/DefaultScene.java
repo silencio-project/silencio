@@ -13,8 +13,9 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+
 
 /**
  * @author Moritz Thoma
@@ -32,19 +33,21 @@ public abstract class DefaultScene extends Scene {
         this.content = content;
 
         var anchorPane = new AnchorPane();
-        try {
-            var logoImage = new Image(new FileInputStream("src/main/resources/logo_silencio_lightgrey.png"));
+
+        try (InputStream in = DefaultScene.class.getClassLoader().getResourceAsStream("logo_silencio_lightgrey.png")) {
+            if (in == null) {
+                throw new RuntimeException();
+            }
+            var logoImage = new Image(in);
             var logo = new ImageView(logoImage);
             logo.setFitHeight(70);
             logo.setFitWidth(70);
             anchorPane.getChildren().add(logo);
             AnchorPane.setTopAnchor(logo, 20d);
             AnchorPane.setRightAnchor(logo, 20d);
-        } catch (FileNotFoundException e) {
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
-
         var home = new Button("Home");
         var heading = new Label(title);
 
