@@ -5,6 +5,7 @@ import de.dhbw.silencio.storage.ProtocolRepositoryCsv;
 import de.dhbw.silencio.storage.Room;
 import de.dhbw.silencio.storage.RoomRepositoryCsv;
 import de.dhbw.silencio.ui.components.RoomLayout;
+import de.dhbw.silencio.ui.data._TestData;
 import de.dhbw.silencio.ui.util.Typography;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -47,7 +48,7 @@ public class Archive extends DefaultScene {
         List<Protocol> protocolList = List.of();
         List<Room> roomList = List.of();
         try {
-            protocolList = new ProtocolRepositoryCsv().getAll();
+            protocolList = _TestData.protocols();
             roomList = new RoomRepositoryCsv().getAll();
         } catch (IOException e) {
             System.out.println("Data storage request went wrong");
@@ -130,7 +131,7 @@ public class Archive extends DefaultScene {
             if (currentProtocol.getData().length > currentIndex) {
                 slider.setValue(currentIndex);
                 roomLayout.updatePointer(currentProtocol.getData()[currentIndex][1], 200);
-                timestamp.setText(String.valueOf(currentProtocol.getData()[currentIndex][0]));
+                timestamp.setText(millisToLocalTime(currentProtocol.getData()[currentIndex][0]));
                 currentIndex++;
             } else {
                 timeline.stop();
@@ -178,7 +179,8 @@ public class Archive extends DefaultScene {
     }
 
     private String millisToLocalTime(int m) {
-        return Instant.ofEpochMilli(m).atZone(ZoneId.systemDefault()).toLocalDateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        long mm = m * 1000L;
+        return Instant.ofEpochMilli(mm).atZone(ZoneId.systemDefault()).toLocalDateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
     }
 
 
