@@ -3,6 +3,8 @@ package de.dhbw.silencio.audio;
 /**
  * Provides a triangulation calculation.
  *
+ * @author Luis Binzenhöfer
+ * @author Daniel Eremeev
  * @author Yannick Kirschen
  * @since 1.0.0
  */
