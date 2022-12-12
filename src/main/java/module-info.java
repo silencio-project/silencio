@@ -11,4 +11,5 @@ module de.dhbw.silencio {
 
     exports de.dhbw.silencio.ui.scene;
     exports de.dhbw.silencio.ui;
+    exports de.dhbw.silencio.storage;
 }

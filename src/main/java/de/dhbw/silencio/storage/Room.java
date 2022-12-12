@@ -21,6 +21,8 @@ public class Room {
     private int betweenRows;
     private int distanceToWallLeft;
 
+    public Room(){}
+
     public Room(int length, int width, int deskDistanceToBoard, int distanceFirstRowToDesk, int tableLength, int tableWidth, int rows, int tablesPerRow, int betweenRows, int deskDistanceToWallLeft, int distanceToWallLeft, String description) {
         this.length = length;
         this.width = width;

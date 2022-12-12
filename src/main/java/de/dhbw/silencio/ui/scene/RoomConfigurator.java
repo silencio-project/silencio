@@ -175,7 +175,7 @@ public class RoomConfigurator extends DefaultScene {
         if (currentSelected == null) {
             currentSelected = Room.emptyRoom();
         }
-        //updateFields(currentSelected, description, roomSize, desk, firstRow, tableSize, amountRows, amountTablesPerRow, distanceBetweenRows, distanceDeskToWallLeft, distanceToWallLeft);
+        updateFields(currentSelected, description, roomSize, desk, firstRow, tableSize, amountRows, amountTablesPerRow, distanceBetweenRows, distanceDeskToWallLeft, distanceToWallLeft);
         var left = new VBox(dropDown, grid);
         left.setAlignment(Pos.TOP_CENTER);
         left.setSpacing(20);
