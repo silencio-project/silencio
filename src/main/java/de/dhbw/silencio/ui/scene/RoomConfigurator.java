@@ -1,12 +1,25 @@
 package de.dhbw.silencio.ui.scene;
 
-import de.dhbw.silencio.ui.components.*;
-import de.dhbw.silencio.ui.data.*;
-import javafx.geometry.*;
+import de.dhbw.silencio.storage.Room;
+import de.dhbw.silencio.storage.RoomRepositoryCsv;
+import de.dhbw.silencio.ui.components.LabeledDoubleNumberField;
+import de.dhbw.silencio.ui.components.LabeledNumberField;
+import de.dhbw.silencio.ui.components.LabeledTextField;
+import de.dhbw.silencio.ui.components.RoomLayout;
+import javafx.animation.Timeline;
+import javafx.collections.FXCollections;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Group;
 import javafx.scene.control.*;
-import javafx.scene.layout.*;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Callback;
+
+import java.io.IOException;
+import java.util.List;
 
 /**
  * @author Moritz Thoma
@@ -17,13 +30,18 @@ public class RoomConfigurator extends DefaultScene {
 
     private Room currentSelected;
     private RoomLayout roomLayout;
+    private List<Room> roomList = List.of();
 
     public RoomConfigurator(Stage stage) {
-        super(new HBox(), stage.getWidth(), stage.getHeight(), stage, "RoomConfigurator");
+        super(new HBox(), stage.getWidth(), stage.getHeight(), stage, "RoomConfigurator", new VBox());
         var layout = (HBox) this.getParentContent();
         var grid = new GridPane();
-
-        var roomList = _TestData.rooms();
+        var roomRepo = new RoomRepositoryCsv();
+        try {
+            roomList = roomRepo.getAll();
+        } catch (IOException e) {
+            System.out.println("Data storage request went wrong");
+        }
 
         var description = new LabeledTextField("Description");
         var roomSize = new LabeledDoubleNumberField("Room Size (length x width) *");
@@ -132,7 +150,31 @@ public class RoomConfigurator extends DefaultScene {
             dropDown.getSelectionModel().clearSelection();
         });
 
+        save.setOnAction(actionEvent -> {
+            try {
+                if (currentSelected.getUid() == 0) {
+                    int id = 1;
+                    if (!roomList.isEmpty()) {
+                        id = roomList.get(roomList.size() - 1).getUid() + 1;
+                    }
+                    currentSelected.setUid(id);
+                }
+                roomRepo.save(currentSelected);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            try {
+                roomList = roomRepo.getAll();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            dropDown.setItems(FXCollections.observableArrayList(roomList));
+        });
+
         currentSelected = dropDown.getValue();
+        if (currentSelected == null) {
+            currentSelected = Room.emptyRoom();
+        }
         updateFields(currentSelected, description, roomSize, desk, firstRow, tableSize, amountRows, amountTablesPerRow, distanceBetweenRows, distanceDeskToWallLeft, distanceToWallLeft);
         var left = new VBox(dropDown, grid);
         left.setAlignment(Pos.TOP_CENTER);
@@ -151,19 +193,21 @@ public class RoomConfigurator extends DefaultScene {
                               LabeledNumberField distanceBetweenRows,
                               LabeledNumberField distanceDeskToWallLeft,
                               LabeledNumberField distanceToWallLeft) {
+        if (room != null) {
 
-        description.setText(room.getDescription());
-        roomSize.setText1(room.getLength());
-        roomSize.setText2(room.getWidth());
-        desk.setText(room.getDistanceDeskToBoard());
-        firstRow.setText(room.getDistanceFirstRowToDesk());
-        tableSize.setText1(room.getTableLength());
-        tableSize.setText2(room.getTableWidth());
-        amountRows.setText(room.getRows());
-        amountTablesPerRow.setText(room.getTablesPerRow());
-        distanceBetweenRows.setText(room.getBetweenRows());
-        distanceDeskToWallLeft.setText(room.getDeskDistanceToWallLeft());
-        distanceToWallLeft.setText(room.getDistanceToWallLeft());
+            description.setText(room.getDescription());
+            roomSize.setText1(room.getLength());
+            roomSize.setText2(room.getWidth());
+            desk.setText(room.getDistanceDeskToBoard());
+            firstRow.setText(room.getDistanceFirstRowToDesk());
+            tableSize.setText1(room.getTableLength());
+            tableSize.setText2(room.getTableWidth());
+            amountRows.setText(room.getRows());
+            amountTablesPerRow.setText(room.getTablesPerRow());
+            distanceBetweenRows.setText(room.getBetweenRows());
+            distanceDeskToWallLeft.setText(room.getDeskDistanceToWallLeft());
+            distanceToWallLeft.setText(room.getDistanceToWallLeft());
+        }
     }
 
     private void updateRoom(HBox layout, Room room) {

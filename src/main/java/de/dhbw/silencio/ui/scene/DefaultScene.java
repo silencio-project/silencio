@@ -1,31 +1,36 @@
 package de.dhbw.silencio.ui.scene;
 
+import de.dhbw.silencio.ui.util.Callback;
 import de.dhbw.silencio.ui.util.Typography;
 import javafx.geometry.Insets;
-import javafx.scene.*;
-import javafx.scene.control.*;
-import javafx.scene.image.*;
-import javafx.scene.layout.*;
+import javafx.scene.Node;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-import java.io.*;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 
 /**
  * @author Moritz Thoma
  * @since 1.0.0
  */
-public class DefaultScene extends Scene {
+public abstract class DefaultScene extends Scene {
 
     public Stage stage;
     public Node content;
+    private Callback callback;
 
-    public DefaultScene(Node content, double width, double height, Stage stage, String heading) {
-        super(new VBox(getHeader(stage, heading), content), width, height);
+    public DefaultScene(Node content, double width, double height, Stage stage, String title, VBox root) {
+        super(root, width, height);
         this.stage = stage;
         this.content = content;
-    }
 
-    private static AnchorPane getHeader(Stage stage, String title) {
         var anchorPane = new AnchorPane();
         try {
             var logoImage = new Image(new FileInputStream("src/main/resources/logo_silencio_lightgrey.png"));
@@ -50,15 +55,25 @@ public class DefaultScene extends Scene {
         AnchorPane.setTopAnchor(heading, 20d);
         AnchorPane.setLeftAnchor(heading, stage.getWidth() / 2.25);
 
-        home.setOnAction(action -> stage.setScene(new Dashboard(stage)));
+        home.setOnAction(action -> {
+            if (callback != null) {
+                callback.onBack();
+            }
+            stage.setScene(new Dashboard(stage));
+        });
         anchorPane.setPadding(new Insets(0, 0, 10, 0));
 
-        return anchorPane;
+        root.getChildren().addAll(anchorPane, content);
+
     }
 
     public Node getParentContent() {
         return content;
     }
 
-    /*public void updateScene*/
+    public void setCallback(Callback callback) {
+        this.callback = callback;
+    }
+
+
 }

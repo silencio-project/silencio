@@ -1,4 +1,4 @@
-package de.dhbw.silencio.ui.data;
+package de.dhbw.silencio.storage;
 
 import java.time.LocalDateTime;
 
@@ -15,6 +15,9 @@ public class Protocol {
      */
     private int[][] data;
     private LocalDateTime time;
+
+    public Protocol() {
+    }
 
     public Protocol(int roomUid, int[][] data, LocalDateTime time) {
         this.roomUid = roomUid;

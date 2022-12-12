@@ -1,4 +1,4 @@
-package de.dhbw.silencio.ui.data;
+package de.dhbw.silencio.storage;
 
 /**
  * @author Moritz Thoma
@@ -20,6 +20,8 @@ public class Room {
     private int tablesPerRow;
     private int betweenRows;
     private int distanceToWallLeft;
+
+    public Room(){}
 
     public Room(int length, int width, int deskDistanceToBoard, int distanceFirstRowToDesk, int tableLength, int tableWidth, int rows, int tablesPerRow, int betweenRows, int deskDistanceToWallLeft, int distanceToWallLeft, String description) {
         this.length = length;
