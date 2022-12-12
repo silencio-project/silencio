@@ -15,6 +15,11 @@ public interface StereoMicrophone extends Closeable {
     void listen();
 
     /**
+     * Stops listening on a microphone.
+     */
+    void stop();
+
+    /**
      * Get data from the microphone.
      *
      * @param channel channel to use
