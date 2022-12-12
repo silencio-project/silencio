@@ -1,19 +1,31 @@
 package de.dhbw.silencio.ui.scene;
 
 
-import de.dhbw.silencio.audio.*;
+import de.dhbw.silencio.audio.DirectionProviderBuilder;
+import de.dhbw.silencio.audio.Microphone;
+import de.dhbw.silencio.storage.Protocol;
+import de.dhbw.silencio.storage.ProtocolRepositoryCsv;
+import de.dhbw.silencio.storage.Room;
+import de.dhbw.silencio.storage.RoomRepositoryCsv;
 import de.dhbw.silencio.ui.components.RoomLayout;
-import de.dhbw.silencio.ui.data.*;
 import de.dhbw.silencio.ui.util.Typography;
-import javafx.animation.*;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
-import javafx.geometry.*;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
-import javafx.scene.layout.*;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.util.*;
+import javafx.util.Callback;
+import javafx.util.Duration;
 
-import java.util.*;
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Moritz Thoma
@@ -29,14 +41,22 @@ public class LiveView extends DefaultScene {
     private List<String> mic2List;
     private String microphone1 = "";
     private String microphone2 = "";
+    private Timeline timeline;
+    private Protocol currentProtocol;
+    private boolean isRecording;
 
     private DirectionProviderBuilder directionProviderBuilder;
 
     public LiveView(Stage stage) {
-        super(new HBox(), stage.getWidth(), stage.getHeight(), stage, "Live View");
+        super(new HBox(), stage.getWidth(), stage.getHeight(), stage, "Live View", new VBox());
         var layout = (HBox) this.getParentContent();
 
-        var roomList = _TestData.rooms();
+        List<Room> roomList = List.of();
+        try {
+            roomList = new RoomRepositoryCsv().getAll();
+        } catch (IOException e) {
+            System.out.println("Data storage request went wrong");
+        }
         mic1List = new ArrayList<>(Microphone.getAvailableDevices());
         mic2List = new ArrayList<>(Microphone.getAvailableDevices());
 
@@ -50,6 +70,10 @@ public class LiveView extends DefaultScene {
                 setText(empty ? "" : item.getDescription());
             }
         };
+
+        setCallback(() -> {
+            if (timeline != null) timeline.stop();
+        });
 
         var roomChoiceTitle = new Label("Your rooms: ");
         var mic1ChoiceTitle = new Label("Left microphone: ");
@@ -71,6 +95,7 @@ public class LiveView extends DefaultScene {
                 if (newRoom != null) {
                     currentRoom = newRoom;
                     updateRoom(layout, currentRoom);
+                    startTimeLine(roomChoice);
                 }
             }
         );
@@ -87,17 +112,7 @@ public class LiveView extends DefaultScene {
                 mic2List.remove(microphone1);
                 mic2Choice.setItems(FXCollections.observableList(mic2List));
 
-//                if (!microphone1.isEmpty() && !microphone2.isEmpty()) {
-//                    directionProviderBuilder = new DirectionProviderBuilder()
-//                        .deviceName1(microphone1)
-//                        .deviceName2(microphone2);
-//
-//                    Timeline timeline = new Timeline(new KeyFrame(
-//                        Duration.millis(250), ev -> directionProviderBuilder.callback(
-//                        angle -> roomLayout.updatePointer(angle, 200)).build().run()));
-//                    timeline.setCycleCount(Animation.INDEFINITE);
-//                    timeline.play();
-//                }
+                startTimeLine(roomChoice);
             }
         }));
 
@@ -110,21 +125,7 @@ public class LiveView extends DefaultScene {
                 mic1List.remove(microphone2);
                 mic1Choice.setItems(FXCollections.observableList(mic1List));
 
-                if (!microphone1.isEmpty() && !microphone2.isEmpty()) {
-                    new Thread(new DirectionProviderBuilder()
-                        .deviceName1(microphone1)
-                        .deviceName2(microphone2)
-                        .callback(angle -> currentAngle = angle)
-                        .build()).start();
-
-                    Timeline timeline = new Timeline(new KeyFrame(
-                        Duration.millis(100), ev -> {
-                        System.out.println(currentAngle);
-                        roomLayout.updatePointer(currentAngle, 200);
-                    }));
-                    timeline.setCycleCount(Animation.INDEFINITE);
-                    timeline.play();
-                }
+                startTimeLine(roomChoice);
             }
         }));
 
@@ -152,22 +153,41 @@ public class LiveView extends DefaultScene {
         left.setPadding(new Insets(0, 20, 0, 10));
         left.setSpacing(5);
 
+        currentProtocol = new Protocol();
+
         play.setOnAction(event -> {
             stop.setDisable(false);
             break_.setDisable(false);
             play.setDisable(true);
             lastRecording.setDisable(true);
+            isRecording = true;
+            if (currentProtocol.getTime() == null) {
+                currentProtocol.setTime(LocalDateTime.now());
+            }
+            currentProtocol.setRoomUid(currentRoom.getUid());
         });
         break_.setOnAction(event -> {
             break_.setDisable(true);
             stop.setDisable(true);
             play.setDisable(false);
+            isRecording = false;
         });
         stop.setOnAction(event -> {
             stop.setDisable(true);
             break_.setDisable(true);
             play.setDisable(false);
             lastRecording.setDisable(false);
+            isRecording = false;
+
+
+            if (isValid(currentProtocol)) {
+                try {
+                    new ProtocolRepositoryCsv().save(currentProtocol);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            currentProtocol = new Protocol();
         });
 
         layout.getChildren().addAll(left, roomLayout);
@@ -181,6 +201,35 @@ public class LiveView extends DefaultScene {
                 layout.getChildren().add(roomLayout);
                 break;
             }
+        }
+    }
+
+    private boolean isValid(Protocol protocol) {
+        return protocol.getData().length > 0 && protocol.getTime() != null && protocol.getRoomUid() != 0;
+    }
+
+
+    private void startTimeLine(ComboBox<Room> roomChoice) {
+        if (!microphone1.isEmpty() && !microphone2.isEmpty() && !roomChoice.getSelectionModel().isEmpty()) {
+            new Thread(new DirectionProviderBuilder()
+                .deviceName1(microphone1)
+                .deviceName2(microphone2)
+                .callback(angle -> currentAngle = angle)
+                .build()).start();
+
+            timeline = new Timeline(new KeyFrame(
+                Duration.millis(100), ev -> {
+                roomLayout.updatePointer(currentAngle, 200);
+
+                if (isRecording) {
+                    currentProtocol.getData()[currentProtocol.getData().length - 1][0] = (int) System.currentTimeMillis();
+                    currentProtocol.getData()[currentProtocol.getData().length - 1][1] = (int) currentAngle; // TODO should be double
+                }
+
+            }));
+            this.setCallback(() -> timeline.stop());
+            timeline.setCycleCount(Animation.INDEFINITE);
+            timeline.play();
         }
     }
 }

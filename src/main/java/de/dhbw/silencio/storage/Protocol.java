@@ -16,6 +16,9 @@ public class Protocol {
     private int[][] data;
     private LocalDateTime time;
 
+    public Protocol() {
+    }
+
     public Protocol(int roomUid, int[][] data, LocalDateTime time) {
         this.roomUid = roomUid;
         this.data = data;

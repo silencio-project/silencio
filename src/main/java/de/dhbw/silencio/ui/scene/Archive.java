@@ -1,18 +1,29 @@
 package de.dhbw.silencio.ui.scene;
 
-import de.dhbw.silencio.storage.*;
+import de.dhbw.silencio.storage.Protocol;
+import de.dhbw.silencio.storage.ProtocolRepositoryCsv;
+import de.dhbw.silencio.storage.Room;
+import de.dhbw.silencio.storage.RoomRepositoryCsv;
 import de.dhbw.silencio.ui.components.RoomLayout;
-import de.dhbw.silencio.ui.data._TestData;
 import de.dhbw.silencio.ui.util.Typography;
-import javafx.animation.*;
-import javafx.geometry.*;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
-import javafx.scene.layout.*;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.util.*;
+import javafx.util.Callback;
+import javafx.util.Duration;
 
+import java.io.IOException;
+import java.time.Instant;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -28,12 +39,22 @@ public class Archive extends DefaultScene {
     private boolean isPlaying = false;
     private RoomLayout roomLayout;
 
+
     public Archive(Stage stage) {
-        super(new HBox(), stage.getWidth(), stage.getHeight(), stage, "Archive");
+        super(new HBox(), stage.getWidth(), stage.getHeight(), stage, "Archive", new VBox());
         var layout = (HBox) this.getParentContent();
 
-        var protocolList = _TestData.protocols();
-        var roomList = _TestData.rooms();
+        List<Protocol> protocolList = List.of();
+        List<Room> roomList = List.of();
+        try {
+            protocolList = new ProtocolRepositoryCsv().getAll();
+            roomList = new RoomRepositoryCsv().getAll();
+        } catch (IOException e) {
+            System.out.println("Data storage request went wrong");
+        }
+        setCallback(() -> {
+            if (timeline != null) timeline.stop();
+        });
 
         var currentRoom = Room.emptyRoom();
         roomLayout = new RoomLayout(currentRoom);
@@ -73,6 +94,7 @@ public class Archive extends DefaultScene {
         left.setPadding(new Insets(0, 10, 0, 10));
         left.setSpacing(25);
 
+        List<Room> finalRoomList = roomList;
         listView.setOnMouseClicked(event -> {
             var selected = listView.getSelectionModel().getSelectedItem();
             if (selected != null) {
@@ -82,7 +104,7 @@ public class Archive extends DefaultScene {
                 currentIndex = 0;
 
                 currentProtocol = selected;
-                var room = getRoomByUid(roomList, currentProtocol.getRoomUid());
+                var room = getRoomByUid((ArrayList<Room>) finalRoomList, currentProtocol.getRoomUid());
                 if (room != null) {
                     updateRoom(layout, room);
                     slider.setMax(currentProtocol.getData().length - 1);
@@ -90,7 +112,7 @@ public class Archive extends DefaultScene {
                         slider.setValue(newValue.intValue());
                         currentIndex = (int) slider.getValue();
                         roomLayout.updatePointer(currentProtocol.getData()[currentIndex][1], 200);
-                        timestamp.setText(String.valueOf(currentProtocol.getData()[currentIndex][0]));
+                        timestamp.setText(millisToLocalTime(currentProtocol.getData()[currentIndex][0]));
                     });
                     slider.setDisable(false);
                     play.setDisable(false);
@@ -153,6 +175,10 @@ public class Archive extends DefaultScene {
             .filter((room) -> room.getUid() == uid)
             .findAny()
             .orElse(null);
+    }
+
+    private String millisToLocalTime(int m) {
+        return Instant.ofEpochMilli(m).atZone(ZoneId.systemDefault()).toLocalDateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
     }
 
 
