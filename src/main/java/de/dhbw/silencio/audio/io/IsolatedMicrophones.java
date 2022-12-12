@@ -26,6 +26,9 @@ public class IsolatedMicrophones implements StereoMicrophone {
     public void listen() {
         new Thread(microphone1).start();
         new Thread(microphone2).start();
+
+        microphone1.setTrigger(true);
+        microphone2.setTrigger(true);
     }
 
     @Override
