@@ -11,9 +11,9 @@ public class RoomLayout extends StackPane {
 
     public RoomLayout(Room room) {
         this.room = room;
-        var roomLengthPixel = 850;
+        var roomLengthPixel = 650;
         var ratio = (double) roomLengthPixel / room.getLength();
-        var roomWidthPixel = (int) (roomLengthPixel * ratio);
+        var roomWidthPixel = (int) (room.getWidth() * ratio);
 
         var distanceDeskToBoardPixel = (int) (room.getDistanceDeskToBoard() * ratio);
         var distanceFirstRowToDesk = (int) (room.getDistanceFirstRowToDesk() * ratio);
@@ -23,8 +23,8 @@ public class RoomLayout extends StackPane {
         var betweenRowsPixel = (int) (room.getBetweenRows() * ratio);
         var distanceToWallLeftPixel = (int) (room.getDistanceToWallLeft() * ratio);
 
-        this.setPrefHeight(850);
-        this.setPrefWidth(1150);
+        this.setPrefHeight(650);
+        this.setPrefWidth(950);
         this.setBackground(Background.fill(Color.LIGHTGRAY));
         this.setBorder(Border.stroke(Color.BLACK));
 
@@ -46,7 +46,7 @@ public class RoomLayout extends StackPane {
 
         desk = new Table(tableLengthPixel, tableWidthPixel * 2, true);
         desk.setLayoutX(distanceDeskToWallLeftPixel);
-        desk.setLayoutY(850 - (distanceDeskToBoardPixel + tableLengthPixel));
+        desk.setLayoutY(650 - (distanceDeskToBoardPixel + tableLengthPixel));
 
         roomLayout.getChildren().add(desk);
         this.getChildren().add(roomLayout);

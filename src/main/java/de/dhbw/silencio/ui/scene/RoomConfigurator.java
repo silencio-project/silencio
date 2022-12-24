@@ -229,7 +229,7 @@ public class RoomConfigurator extends DefaultScene {
     }
 
     private Room getDefaultRoom() {
-        return new Room(1000, 700, 100, 100, 80, 100, 5, 6, 50, 300, 100, "New Room");
+        return new Room(1000, 700, 100, 100, 80, 100, 5, 5, 50, 300, 100, "New Room");
     }
 
 }

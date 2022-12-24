@@ -16,8 +16,8 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) {
-        stage.setHeight(1000);
-        stage.setWidth(1400);
+        stage.setHeight(800);
+        stage.setWidth(1200);
         stage.setResizable(false);
         stage.setScene(new Dashboard(stage));
         stage.show();
