@@ -1,13 +1,16 @@
 /**
+ * @author Paul Antoni
+ * @author Luis Binzenhöfer
+ * @author Daniel Eremeev
+ * @author Yannick Kirschen
  * @author Moritz Thoma
- * @since 1.0.0
  */
-
 module de.dhbw.silencio {
     requires javafx.controls;
     requires java.desktop;
     requires static lombok;
-    requires opencsv;
+    requires com.opencsv;
+    requires java.sql;
 
     exports de.dhbw.silencio.ui.scene;
     exports de.dhbw.silencio.ui;
