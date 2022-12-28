@@ -4,6 +4,8 @@ package de.dhbw.silencio.storage;
  * A convenience class to store {@link Room}s.
  *
  * @author Paul Antoni
+ * @author Luis Binzenhöfer
+ * @author Daniel Eremeev
  * @author Yannick Kirschen
  * @since 1.0.0
  */
