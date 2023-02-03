@@ -25,7 +25,7 @@
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
 
-        <lombok.version>1.18.24</lombok.version>
+        <lombok.version>1.18.26</lombok.version>
 
         <javafx.version>19</javafx.version>
         <junit.version>5.9.1</junit.version>
